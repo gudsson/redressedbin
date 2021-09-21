@@ -14,7 +14,7 @@ const isIdUnique = async(binId) => {
     })
 }
 
-binsRouter.get('/', async (req, res, next) => {
+binsRouter.get('/', async (req, res, next) => { // DONE
   let binId = generateId(8)
 
   while (!(await isIdUnique(binId))) {
@@ -35,20 +35,33 @@ binsRouter.get('/', async (req, res, next) => {
 
 binsRouter.all('/:id', (req, res, next) => {
   const binId = req.params.id
-  let body = req.body
-  let headers = req.headers
-  let method = req.method
 
-  console.log(`ip: ${req.ip}`)
-  console.log(`ips: ${req.ips}`)
-  console.log(`hostname: ${req.hostname}`)
-  console.log(`originalUrl: ${req.originalUrl}`)
-  console.log(`path: ${req.path}`)
-  // console.log(req.route)
-  // console.log(req.socket)
-  // console.log(`subdomains: ${req.subdomains}`)
-  res.json({ method, headers, body })
-  // res.json({'msg': `bin ${binId} has been hit`})
+  let reqObj = {
+    originalUrl: req.originalUrl,
+    baseUrl: req.baseUrl,
+    path: req.path,
+    method: req.method,
+    fromIP: req.ip,
+    fromIPs: req.ips,
+    headers: {},
+    body: {},
+    createdAt: new Date()
+  }
+
+  Bin.findOneAndUpdate({ binId: binId },  {$push: { requests: { request: reqObj } }}, { new: true } )
+    .then(updatedBin => {
+      res.json(updatedBin)
+    })
+    .catch(error => next(error))
+
+  Bin.findOne({ binId: binId })
+    .then(bin => {
+      if (bin.requests && bin.requests.length > 20) {
+        const len = bin.request.length
+        const name = `requests.${len}.isActive`
+        Bin.findOneAndUpdate({ binId: binId }, { "$set": { name: true }})
+      }
+    })
 })
 
 module.exports = binsRouter
