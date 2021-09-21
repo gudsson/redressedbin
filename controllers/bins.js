@@ -42,7 +42,7 @@ binsRouter.get('/inspect/:id', (req, res, next) => {
 
 binsRouter.all('/:id', (req, res, next) => {
   const binId = req.params.id
-  console.log(req.method)
+  console.log(req.method) // testing
   let reqObj = {
     originalUrl: req.originalUrl,
     baseUrl: req.baseUrl,
