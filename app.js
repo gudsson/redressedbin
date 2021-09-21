@@ -8,9 +8,17 @@ const binsRouter = require("./controllers/bins")
 // const notesRouter = require('./controllers/notes')
 // const middleware = require('./utils/middleware')
 // const logger = require('./utils/logger')
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-console.log(`connecting to MongoDB Database at: ${process.env.MONGODB_URI}`)
+// console.log(`connecting to MongoDB Database at: ${process.env.MONGODB_URI}`)
+
+mongoose.connect(process.env.MONGODB_URI)//, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
 app.use(express.static('public'));
 app.use(express.json())
