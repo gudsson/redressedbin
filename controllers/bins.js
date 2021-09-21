@@ -42,7 +42,7 @@ binsRouter.get('/inspect/:id', (req, res, next) => {
 
 binsRouter.all('/:id', (req, res, next) => {
   const binId = req.params.id
-  console.log(req.method) // testing2
+
   let reqObj = {
     originalUrl: req.originalUrl,
     baseUrl: req.baseUrl,
@@ -63,7 +63,6 @@ binsRouter.all('/:id', (req, res, next) => {
         bin.save()
       }
       res.json({ "ip_address": reqObj.fromIP })
-      // res.json(bin)
     })
     .catch(error => next(error))
 })
