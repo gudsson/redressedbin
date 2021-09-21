@@ -49,19 +49,15 @@ binsRouter.all('/:id', (req, res, next) => {
   }
 
   Bin.findOneAndUpdate({ binId: binId },  {$push: { requests: { request: reqObj } }}, { new: true } )
-    .then(updatedBin => {
-      res.json(updatedBin)
+    .then( bin => {
+      const MAX_LEN = 20
+      if (bin && bin.requests.length > MAX_LEN) {
+        bin.requests[bin.requests.length - MAX_LEN - 1].request.isActive = false
+        bin.save()
+      }
+      res.json(bin)
     })
     .catch(error => next(error))
-
-  Bin.findOne({ binId: binId })
-    .then(bin => {
-      if (bin.requests && bin.requests.length > 20) {
-        const len = bin.request.length
-        const name = `requests.${len}.isActive`
-        Bin.findOneAndUpdate({ binId: binId }, { "$set": { name: true }})
-      }
-    })
 })
 
 module.exports = binsRouter
