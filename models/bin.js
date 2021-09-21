@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const binSchema = new mongoose.Schema({
   binId: String, //TODO: unique constraint
+  isActive: { type: Boolean, default: true },
   requests: [{
     request: new mongoose.Schema(
       {
