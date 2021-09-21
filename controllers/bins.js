@@ -33,6 +33,13 @@ binsRouter.get('/', async (req, res, next) => { // DONE
     .catch(error => next(error))
 })
 
+binsRouter.get('/inspect/:id', (req, res, next) => {
+  const binId = req.params.id
+  Bin.findOne({ binId }).then(bin => {
+    res.json(bin)
+  })
+})
+
 binsRouter.all('/:id', (req, res, next) => {
   const binId = req.params.id
 
@@ -55,7 +62,8 @@ binsRouter.all('/:id', (req, res, next) => {
         bin.requests[bin.requests.length - MAX_LEN - 1].request.isActive = false
         bin.save()
       }
-      res.json(bin)
+      res.json({ "ip_address": reqObj.fromIP })
+      // res.json(bin)
     })
     .catch(error => next(error))
 })

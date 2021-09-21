@@ -10,9 +10,7 @@ const binsRouter = require("./controllers/bins")
 // const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
-// console.log(`connecting to MongoDB Database at: ${process.env.MONGODB_URI}`)
-
-mongoose.connect(process.env.MONGODB_URI)//, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('connected to MongoDB')
   })
@@ -20,12 +18,14 @@ mongoose.connect(process.env.MONGODB_URI)//, { useNewUrlParser: true, useUnified
     console.log('error connecting to MongoDB:', error.message)
   })
 
+app.set('trust proxy', 'loopback')
+
 app.use(express.static('public'));
 app.use(express.json())
 app.use("/api/bins", binsRouter)
-app.use((req, res, next) => {
-  const err = new HttpError("Route doesn't exist", 404)
-  throw err
-})
+// app.use((req, res, next) => {
+//   const err = new HttpError("Route doesn't exist", 404)
+//   throw err
+// })
 
 module.exports = app
