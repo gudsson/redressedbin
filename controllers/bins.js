@@ -50,8 +50,8 @@ binsRouter.all('/:id', (req, res, next) => {
     method: req.method,
     fromIP: req.ip,
     fromIPs: req.ips,
-    headers: {},
-    body: {},
+    headers: req.headers,
+    body: req.body,
     createdAt: new Date()
   }
 
