@@ -55,7 +55,7 @@ binsRouter.get('/inspect/:id', (req, res, next) => {
                 body: req.request.body,
                 headers: req.request.headers
           }
-        })
+        }).reverse()
       }
 
       res.status(200).json(data)
@@ -85,7 +85,8 @@ binsRouter.all('/:id', (req, res, next) => {
         bin.requests[bin.requests.length - MAX_LEN - 1].request.isActive = false
         bin.save()
       }
-      res.status(400).json({ "ip_address": reqObj.fromIP })
+      
+      res.status(200).json({ "ip_address": reqObj.fromIP })
     })
     .catch(error => next(error))
 })
