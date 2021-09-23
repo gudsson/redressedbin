@@ -28,15 +28,38 @@ binsRouter.get('/', async (req, res, next) => { // DONE
 
   bin.save()
     .then(savedBin => {
-      res.json(savedBin)
+      res.status(200).json(savedBin)
     })
     .catch(error => next(error))
 })
 
 binsRouter.get('/inspect/:id', (req, res, next) => {
   const binId = req.params.id
+
   Bin.findOne({ binId }).then(bin => {
-    res.json(bin)
+    if (bin === null) {
+      res.status(404).json({'msg': `Bin ${binId} not found`})
+    } else {
+      const ageInHours = ((new Date()) - bin.createdAt) / 3600000
+      let data
+
+      if (ageInHours > 48) {
+        data = {'msg': `Bin ${binId} has expired`}
+      } else {
+        data = bin.requests.map(req => {
+          return {
+                method: req.request.method,
+                path: req.request.path,
+                createdAt: req.request.createdAt,
+                fromIP: req.request.fromIP,
+                body: req.request.body,
+                headers: req.request.headers
+          }
+        })
+      }
+
+      res.status(200).json(data)
+    }
   })
 })
 
@@ -62,7 +85,7 @@ binsRouter.all('/:id', (req, res, next) => {
         bin.requests[bin.requests.length - MAX_LEN - 1].request.isActive = false
         bin.save()
       }
-      res.json({ "ip_address": reqObj.fromIP })
+      res.status(400).json({ "ip_address": reqObj.fromIP })
     })
     .catch(error => next(error))
 })

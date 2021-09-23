@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const HttpError = require('./controllers/HttpError')
 const binsRouter = require("./controllers/bins")
-// const cors = require('cors')
+const cors = require('cors')
 // const notesRouter = require('./controllers/notes')
 // const middleware = require('./utils/middleware')
 // const logger = require('./utils/logger')
@@ -18,7 +18,13 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('error connecting to MongoDB:', error.message)
   })
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200 // For legacy browser support
+}
+
 app.set('trust proxy', 'loopback')
+app.use(cors(corsOptions))
 
 app.use(express.static('public'));
 app.use(express.json())
