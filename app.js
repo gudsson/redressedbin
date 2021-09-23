@@ -1,16 +1,11 @@
 require('dotenv').config()
-// const config = require('./utils/config')
 const express = require('express');
 const app = express();
-const HttpError = require('./controllers/HttpError')
 const binsRouter = require("./controllers/bins")
 const cors = require('cors')
-// const notesRouter = require('./controllers/notes')
-// const middleware = require('./utils/middleware')
-// const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
-mongoose.connect("mongodb://127.0.0.1:27017/Request_Records")//process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('connected to MongoDB')
   })
