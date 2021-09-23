@@ -13,13 +13,13 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200 // For legacy browser support
-}
+// const corsOptions = {
+//     origin: ['http://bin.gudsson.ca','https://bin.gudsson.ca','http://localhost:3000'],
+//     optionsSuccessStatus: 200 // For legacy browser support
+// }
 
 app.set('trust proxy', 'loopback')
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.use(express.static('public'));
 app.use(express.json())
