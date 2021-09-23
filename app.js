@@ -10,7 +10,7 @@ const cors = require('cors')
 // const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect("mongodb://127.0.0.1:27017/Request_Records")//process.env.MONGODB_URI)
   .then(() => {
     console.log('connected to MongoDB')
   })
