@@ -4,7 +4,7 @@ const http = require('http')
 
 const server = http.createServer(app)
 
-const PORT = process.env.PORT || 3001
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+const BACKEND_PORT = process.env.BACKEND_PORT || 3001
+server.listen(BACKEND_PORT, () => {
+  console.log(`Server running on port ${BACKEND_PORT}`)
 })

@@ -1,5 +1,9 @@
+require('dotenv').config()
 const binsRouter = require('express').Router()
 const Bin = require('../models/bin')
+const io = require("socket.io-client")
+
+const socket = io.connect(`http://localhost:${process.env.SOCKET_PORT}`)
 
 const generateId = (size) => {
   const arr = new Array(size).fill(0)
@@ -87,6 +91,8 @@ binsRouter.all('/:id', (req, res, next) => {
       }
       
       res.status(200).json({ "ip_address": reqObj.fromIP })
+
+      socket.emit('request')
     })
     .catch(error => next(error))
 })
