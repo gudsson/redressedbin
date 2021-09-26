@@ -18,7 +18,7 @@ const isIdUnique = async(binId) => {
     })
 }
 
-binsRouter.get('/', async (req, res, next) => { // DONE
+binsRouter.get('/', async (req, res, next) => { // create new bin
   let binId = generateId(8)
 
   while (!(await isIdUnique(binId))) {
@@ -37,7 +37,7 @@ binsRouter.get('/', async (req, res, next) => { // DONE
     .catch(error => next(error))
 })
 
-binsRouter.get('/inspect/:id', (req, res, next) => {
+binsRouter.get('/inspect/:id', (req, res, next) => { // view bin
   const binId = req.params.id
 
   Bin.findOne({ binId }).then(bin => {
@@ -67,7 +67,7 @@ binsRouter.get('/inspect/:id', (req, res, next) => {
   })
 })
 
-binsRouter.all('/:id', (req, res, next) => {
+binsRouter.all('/:id', (req, res, next) => { // hit endpoint
   const binId = req.params.id
 
   let reqObj = {
