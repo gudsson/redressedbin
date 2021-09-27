@@ -2,21 +2,25 @@ require('dotenv').config()
 const express = require('express')
 const http = require('http')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 
 const server = http.createServer(app)
 const io = require("socket.io")(server, {
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
 
-app.set("socketio", io)
+// app.set("socketio", io)
 
 io.on("connection", socket => {
   socket.emit("socket connected")
+  console.log("socket connected")
   socket.on("request", () => {
     io.emit("request received")
+    console.log("request!")
   })
 })
 
