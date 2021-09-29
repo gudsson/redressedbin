@@ -7,20 +7,18 @@ app.use(cors())
 
 const server = http.createServer(app)
 const io = require("socket.io")(server, {
+  path: "/socket",
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://bin.gudsson.ca",
     methods: ["GET", "POST"],
+    credentials: true 
   },
 });
 
-// app.set("socketio", io)
-
 io.on("connection", socket => {
   socket.emit("socket connected")
-  console.log("socket connected")
   socket.on("request", () => {
     io.emit("request received")
-    console.log("request!")
   })
 })
 

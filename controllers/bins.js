@@ -3,7 +3,7 @@ const binsRouter = require('express').Router()
 const Bin = require('../models/bin')
 const io = require("socket.io-client")
 
-const socket = io.connect(`http://localhost:${process.env.SOCKET_PORT}`)
+const socket = io(`http://localhost:${process.env.SOCKET_PORT}/`, { path: "/socket"})
 
 const generateId = (size) => {
   const arr = new Array(size).fill(0)
