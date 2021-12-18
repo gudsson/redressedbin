@@ -1,23 +1,29 @@
-require('dotenv').config()
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
 const app = express();
-const binsRouter = require("./controllers/bins")
-const cors = require('cors')
-const mongoose = require('mongoose')
+const binsRouter = require("./controllers/bins");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const path = require("path");
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('connected to MongoDB')
+    console.log("connected to MongoDB");
   })
   .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
+    console.log("error connecting to MongoDB:", error.message);
+  });
 
-app.set('trust proxy', 'loopback')
-app.use(cors())
+if (process.env.BUILT) {
+  app.use(express.static(path.join(__dirname, "build")));
+}
 
-app.use(express.static('public'));
-app.use(express.json())
-app.use("/api/bins", binsRouter)
+app.set("trust proxy", "loopback");
+app.use(cors());
 
-module.exports = app
+app.use(express.static("public"));
+app.use(express.json());
+app.use("/api/bins", binsRouter);
+
+module.exports = app;

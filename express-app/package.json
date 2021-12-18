@@ -9,5 +9,8 @@
     "mongoose": "^6.0.7",
     "socket.io": "^4.2.0",
     "socket.io-client": "^4.2.0"
+  },
+  "scripts": {
+    "build": "rm -rf build && cd ../react-app/ && npm run build --prod && cp -r build ../express-app"
   }
 }
