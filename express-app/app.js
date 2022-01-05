@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect("mongodb://mongodb:27017/redressedbin")
   .then(() => {
     console.log("connected to MongoDB");
   })

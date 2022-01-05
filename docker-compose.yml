@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  mongodb:
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    networks:
+      - mongo-network
+  express:
+    depends_on:
+      - mongodb
+    build:
+      context: ./express-app
+      dockerfile: Dockerfile.express
+    restart: unless-stopped
+    ports:
+      - 3001:3001
+    environment:
+      - PRODUCTION=false
+    networks:
+      - mongo-network
+  react:
+    depends_on:
+      - express
+    build:
+      context: ./react-app
+      dockerfile: Dockerfile.react
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:3001
+      - REACT_APP_API_PATH=/api/bins
+      - REACT_APP_FRONTEND_URL=http://localhost:3000
+networks:
+  mongo-network:
